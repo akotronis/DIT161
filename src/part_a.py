@@ -18,7 +18,7 @@ class PartA:
             orientation='horizontal',
             default_index=0,
         )
-        self.cwd = Path().absolute()
+        self.cwd = Path().parent.absolute()
         self.data_fld = self.cwd / 'Data' / 'Part-A'
         self.data_dict = self.load_analysis_data()
 
