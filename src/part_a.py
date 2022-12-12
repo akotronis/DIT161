@@ -31,6 +31,13 @@ class PartA:
         return airline_options
 
     @st.cache
+    def min_max_years(self):
+        years = self.data_dict['dates']['year'].sort_values().unique()
+        _min = int(years.min())
+        _max = int(years.max())
+        return _min, _max
+
+    @st.cache
     def load_analysis_data(self):
         data_dict = {
             'flights': pd.read_csv(self.data_fld / 'flights.zip', keep_default_na=False, na_values='', encoding='utf-8'),
@@ -84,7 +91,7 @@ class PartA:
     def display_preparation_page(self):
         st.markdown(f"## Final Tables diagram")
         st.markdown(f"[Draw SQL free online tool](https://drawsql.app/teams/akotronis-team/diagrams/project-1)")
-        part_a_img = Image.open(self.cwd / 'PartA-diagram.jpg')
+        part_a_img = Image.open(self.cwd / 'resources' / 'PartA-diagram.jpg')
         st.image(part_a_img, caption='Tables diagram')
 
         st.markdown(f"## Steps")
@@ -116,24 +123,17 @@ class PartA:
         """)      
 
         st.markdown(f"### All steps in code")
-        html_fld = self.data_fld.parent.parent
-        with open(html_fld / 'DIT161-Project.html', encoding='utf-8') as f:
+        html_fld = self.data_fld.parent.parent / 'resources'
+        with open(html_fld / 'DIT161-Project-PartA.html', encoding='utf-8') as f:
             content = f.read()
         components.html(content, height=800, scrolling=True)
 
-    def display_analysis_page(self):
+    def display_analysis_sc1(self):
         airports = self.data_dict['airports']
-        airlines = self.data_dict['airlines']
-        countries = self.data_dict['countries']
         dates = self.data_dict['dates']
-        months = self.data_dict['months']
-        seasons = self.data_dict['seasons']
         flights = self.data_dict['flights'].copy()
 
-        flights['month'] = flights['date_id'].map(dates[['id', 'month']].set_index('id').squeeze()).map(months[['id', 'month']].set_index('id').squeeze())
         flights['year'] = flights['date_id'].map(dates[['id', 'year']].set_index('id').squeeze())
-        flights['season'] = flights['date_id'].map(dates[['id', 'season_id']].set_index('id').squeeze()).map(seasons[['id', 'season']].set_index('id').squeeze())
-        
         ################################################################
         ######################## 1 TOP AIRPORTS ########################
         ################################################################
@@ -148,9 +148,7 @@ class PartA:
             - Keep top results
         """)
 
-        years = self.data_dict['dates']['year'].sort_values().unique()
-        _min = int(years.min())
-        _max = int(years.max())
+        _min, _max = self.min_max_years()
         year_values_1 = st.slider('Select a range of years:', _min, _max, (_min, _max), key='sld1')
         min_year_1, max_year_1 = year_values_1
         nlargest_airports = st.number_input("Enter number for top busiest US airports (1-20):", min_value=1, max_value=20, step=1, value=5, format="%i", key='lrg1')
@@ -212,8 +210,16 @@ class PartA:
             )
             st.plotly_chart(airports_figure_by_year)
 
-        st.write("---")
+    def display_analysis_sc2(self):
+        airlines = self.data_dict['airlines']
+        dates = self.data_dict['dates']
+        months = self.data_dict['months']
+        seasons = self.data_dict['seasons']
+        flights = self.data_dict['flights'].copy()
 
+        flights['month'] = flights['date_id'].map(dates[['id', 'month']].set_index('id').squeeze()).map(months[['id', 'month']].set_index('id').squeeze())
+        flights['year'] = flights['date_id'].map(dates[['id', 'year']].set_index('id').squeeze())
+        flights['season'] = flights['date_id'].map(dates[['id', 'season_id']].set_index('id').squeeze()).map(seasons[['id', 'season']].set_index('id').squeeze())
         ################################################################
         ####################### 2 FLIGHT TYPES #########################
         ################################################################
@@ -228,6 +234,7 @@ class PartA:
             - (If no flight type is selected it is assumed total)
         """)
 
+        _min, _max = self.min_max_years()
         year_values_2 = st.slider('Select a range of years', _min, _max, (_min, _max), key='sld2')
         min_year_2, max_year_2 = year_values_2
 
@@ -283,8 +290,11 @@ class PartA:
         )
         st.plotly_chart(airports_figure)
 
-        st.write("---")
+    def display_analysis_sc3(self):
+        dates = self.data_dict['dates']
+        flights = self.data_dict['flights'].copy()
 
+        flights['year'] = flights['date_id'].map(dates[['id', 'year']].set_index('id').squeeze())
         ################################################################
         ##################### 3 US/FOREIGN AIRLINES ####################
         ################################################################
@@ -297,6 +307,7 @@ class PartA:
             - Percents within groups
         """)
 
+        _min, _max = self.min_max_years()
         year_values_3 = st.slider('Select a range of years', _min, _max, (_min, _max), key='sld3')
         min_year_3, max_year_3 = year_values_3
 
@@ -337,7 +348,10 @@ class PartA:
         )
         st.plotly_chart(us_airline_figure_2)
 
-        st.write("---")
+    def display_analysis_sc4(self):
+        airlines = self.data_dict['airlines']
+        countries = self.data_dict['countries']
+        flights = self.data_dict['flights'].copy()
 
         ################################################################
         ####################### 4 AIRLINE TRAFFIC ######################
@@ -401,3 +415,32 @@ class PartA:
         top_airlines = top_airlines.index.map(lambda x : f"| {str(x).zfill(2)}").str.cat(top_airlines.values, sep=' | ')
         st.markdown("### Airlines Ranking:")
         st.markdown('\n\n'.join(top_airlines))
+
+    def display_analysis_page(self):
+        with st.sidebar:
+            main_selected = option_menu(
+                menu_title=None,
+                options = [f"Scenario {i}"for i in range(1,5)],
+                # https://icons.getbootstrap.com/
+                icons = 4 * ['arrow-bar-right'],
+                menu_icon=None,
+                orientation='vertical',
+                default_index=0,
+            )
+        if main_selected == 'Scenario 1':
+            self.display_analysis_sc1()
+        elif main_selected == 'Scenario 2':
+            self.display_analysis_sc2()
+        elif main_selected == 'Scenario 3':
+            self.display_analysis_sc3()
+        elif main_selected == 'Scenario 4':
+            self.display_analysis_sc4()
+        
+        
+        
+
+        
+
+        
+
+        
