@@ -421,7 +421,6 @@ class PartA:
             main_selected = option_menu(
                 menu_title=None,
                 options = [f"Scenario {i}"for i in range(1,5)],
-                # https://icons.getbootstrap.com/
                 icons = 4 * ['arrow-bar-right'],
                 menu_icon=None,
                 orientation='vertical',
