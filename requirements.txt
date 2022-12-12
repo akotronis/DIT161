@@ -1,0 +1,6 @@
+plotly==5.11.0
+streamlit==1.15.0
+streamlit-option-menu==0.3.2
+dython==0.7.2
+ipykernel==6.0.0
+ipython_genutils==0.2.0
