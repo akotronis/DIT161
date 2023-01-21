@@ -322,7 +322,7 @@ class PartA:
         # By year
         df['US/Foreign'] = df['us_foreign_airline'].map({0:'Foreign', 1:'US'})
         df_grouped = df.groupby(['year', 'US/Foreign']).count().reset_index()
-        df_grouped = df_grouped.rename(columns={'us_foreign_airline':'count'})
+        df_grouped = df_grouped.rename(columns={'us_foreign_airline':'count'}).sort_values('US/Foreign', ascending=False)
         df_grouped['US/Foreign (%)'] = (100 * df_grouped['count'] / df_grouped.groupby('year')['count'].transform('sum')).round(0)
 
         us_airline_title_1 = f"US/Foreign airline representation per year in {min_year_3}-{max_year_3}"
@@ -332,6 +332,10 @@ class PartA:
             x="year",
             y="US/Foreign (%)",
             color="US/Foreign",
+            color_discrete_map={
+                'Foreign': '#EF553B',
+                'US': '#636EFA'
+            },
             title=''
         )
         st.plotly_chart(us_airline_figure_1)
