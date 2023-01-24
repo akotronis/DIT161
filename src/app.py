@@ -27,7 +27,7 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 with st.sidebar:
     main_selected = option_menu(
         menu_title=None,
-        options = ['Home', 'Part A', 'Part B'],
+        options = ['Home', 'Part A'],#, 'Part B'],
         # https://icons.getbootstrap.com/
         icons = ['house', '', ''],
         menu_icon=None,

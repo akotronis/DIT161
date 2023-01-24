@@ -169,3 +169,5 @@ cython_debug/
 *.html
 *.jpg
 DIT161-Presentation.html
+DIT161-Presentation.zip
+requirements-0.txt

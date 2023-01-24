@@ -19,7 +19,7 @@ class PartA:
             default_index=0,
         )
         self.cwd = Path().parent.absolute()
-        self.data_fld = self.cwd / 'Data' / 'Part-A'
+        self.data_fld = self.cwd / 'Data' / 'Part-A' / 'Export'
         self.data_dict = self.load_analysis_data()
 
     @staticmethod
@@ -122,11 +122,11 @@ class PartA:
             - **flights** table has all entries with **airport** and **airline** ids in the corresponding dimension tables
         """)      
 
-        st.markdown(f"### All steps in code")
-        html_fld = self.data_fld.parent.parent / 'resources'
-        with open(html_fld / 'DIT161-Project-PartA.html', encoding='utf-8') as f:
-            content = f.read()
-        components.html(content, height=800, scrolling=True)
+        # st.markdown(f"### All steps in code")
+        # html_fld = self.data_fld.parent.parent / 'resources'
+        # with open(html_fld / 'DIT161-Project-PartA.html', encoding='utf-8') as f:
+        #     content = f.read()
+        # components.html(content, height=800, scrolling=True)
 
     def display_analysis_sc1(self):
         airports = self.data_dict['airports']
