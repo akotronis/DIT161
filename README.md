@@ -16,14 +16,23 @@ This project is the project of 1st semester (2022-2023) course **Data Mining** o
 
 # Environment setup
 
-- `>>> virtualenv − p python3 .venv`
-- `>>> source .venv/bin/activate`
-- `>>> pip3 install −r requirements.txt`
+Windows terminal:
+
+- `>>> python -m venv venvname`
+- `>>> venvname\Scripts\activate`
+- `>>> python -m pip install −- upgrade pip` (To avoid potential `psutil` error)
+- `>>> python -m pip install −r requirements.txt`
 
 ### Main Project (Jupyter)
 
-- `>>> python3 -m ipykernel install --user --name=.venv` (`.venv` will appear in jupyter _Kernel_ &rarr; _Change kernel_ menu)
+- [To add kernel to jupyter](https://stackoverflow.com/questions/42449814/running-jupyter-notebook-in-a-virtualenv-installed-sklearn-module-not-available) `>>> python -m ipykernel install --user --name=venvname` (`venvname` will appear in jupyter _Kernel_ &rarr; _Change kernel_ menu and can be a custom name, not necessarily the same as `venvname`)
+- To list existing jupyter kernels `>>> jupyter kernelspec list`
+- [To change the display name of a kernel](https://stackoverflow.com/questions/45085233/jupyter-kernel-is-there-a-way-to-rename-them)
+  - List existing jupyter kernels with the step above to see kernel paths
+  - Edit the `display_name` property in the `kernel.json` file of the correspnding path
+- To [remove the specific kernel from jupyter](https://stackoverflow.com/questions/42635310/remove-kernel-on-jupyter-notebook) `>>>jupyter kernelspec uninstall venvname`
 
 ### Presentation 2 (`streamlit`)
 
 - From root folder `>>> streamlit run src/app.py`
+- Visit `http://localhost:8501/` to see the app running
