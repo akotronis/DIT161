@@ -30,7 +30,7 @@ Windows terminal:
 - [To change the display name of a kernel](https://stackoverflow.com/questions/45085233/jupyter-kernel-is-there-a-way-to-rename-them)
   - List existing jupyter kernels with the step above to see kernel paths
   - Edit the `display_name` property in the `kernel.json` file of the correspnding path
-- To [remove the specific kernel from jupyter](https://stackoverflow.com/questions/42635310/remove-kernel-on-jupyter-notebook) `>>>jupyter kernelspec uninstall venvname`
+- To [remove the specific kernel from jupyter](https://stackoverflow.com/questions/42635310/remove-kernel-on-jupyter-notebook) `>>> jupyter kernelspec uninstall venvname`
 
 ### Presentation 2 (`streamlit`)
 
